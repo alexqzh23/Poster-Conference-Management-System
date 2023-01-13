@@ -1,0 +1,73 @@
+{% load static %}
+<header class="header-area">
+    <!-- Navbar Area -->
+    <div class="newsbox-main-menu">
+        <div class="classy-nav-container breakpoint-off">
+            <div class="container-fluid">
+                <!-- Menu -->
+                <nav class="classy-navbar justify-content-between" id="newsboxNav">
+
+
+                    <!-- Nav brand -->
+                    <a href="index.html" class="nav-brand"><img src="{% static 'img/core-img/logo.png' %}" alt=""></a>
+
+                    <!-- Navbar Toggler -->
+                    <div class="classy-navbar-toggler">
+                        <span class="navbarToggler"><span></span><span></span><span></span></span>
+                    </div>
+
+                    <!-- Menu -->
+                    <div class="classy-menu">
+
+
+                        <!-- Close Button -->
+                        <div class="classycloseIcon">
+                            <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                        </div>
+
+                        <!-- Nav Start -->
+                        <div class="classynav">
+                            <ul>
+                                <li><a href="{% url 'home-page' %}">Home</a>
+                                    {% for programme in programmes %}
+                                        <li>
+                                            <a href="{% url 'pgm-posters' programme.programme_name %}">{{ programme.abbr }}</a>
+                                        </li>
+                                        {#                                <li><a href="#">{{programme.abbr}}</a></li>#}
+                                    {% endfor %}
+                                {% if not user.user_type %}
+                                    <li><a href="{% url 'login-page' %}">Login</a></li>
+                                {% else %}
+                                <li>
+                                    <a href="#">Howdy,
+                                        {% if user.user_type == 'Programme Judge' %}
+                                            {{user.programmejudge.programme.abbr}}
+                                        {% endif %}
+                                        {{user.user_type}}</a>
+                                    <ul class="dropdown">
+                                        <li><a href="#">Profile</a></li>
+                                        {% if user.user_type == 'Administrator'%}
+                                            <li><a href="{% url 'setup-page' %}">Setup</a></li>
+                                        {% elif user.user_type == 'Programme Judge' or user.user_type == 'Head Judge' %}
+                                            <li><a href="{% url 'list-posts' %}">Evaluate Poster</a></li>
+                                        {% elif user.user_type ==  'Coordinator' %}
+                                        <li><a href="/upload_poster/">Upload Poster</a></li>
+                                        <li><a href="/update_poster/">Update Poster</a></li>
+                                        {% elif user.user_type ==  'Chairman' %}
+                                        <li><a href="{% url 'lucky-draw' %}">Lucky Draw</a></li>
+                                        {% endif %}
+                                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                                    </ul>
+                                </li>
+                                {% endif %}
+                            </ul>
+
+                        </div>
+                        <!-- Nav End -->
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>

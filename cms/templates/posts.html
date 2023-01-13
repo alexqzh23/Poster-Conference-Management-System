@@ -1,0 +1,244 @@
+{% extends 'layouts/base.html' %}{% load static %} {% block content %}
+    <h3 class="text-center  mt-30"><b>Poster Evaluation</b></h3>
+    <center>
+        <hr class="w-75">
+    </center>
+    <div class="news-area section-padding-100-70">
+        <div class="container">
+            {#            <h3 class="text-center"><b>Poster Evaluation</b></h3>#}
+            {#            <center>#}
+            {#                <hr class="w-25">#}
+            {#            </center>#}
+            {#            <div class="row mt-5">#}
+            {#                <div class="col-12 col-md-8 col-lg-9">#}
+            {#                    <div id="post-list">#}
+            {#                        {% for post in posts %}#}
+            {#                            <!-- Single News Area -->#}
+            {#                            <div class="single-blog-post d-flex flex-wrap style-5 mb-30">#}
+            {#                                <!-- Blog Thumbnail -->#}
+            {#                                <div class="blog-thumbnail">#}
+            {#                                    <a href="{% url 'view-post' post.pk %}"><img src="{{ post.banner_path.url }}"#}
+            {#                                                                                 alt="{post.title}"></a>#}
+            {#                                </div>#}
+            {##}
+            {#                                <!-- Blog Content -->#}
+            {#                                <div class="blog-content">#}
+            {#                                    <span class="post-date">{{ post.date_created|date:'M d, Y' }}</span>#}
+            {#                                    <a href="{% url 'view-post' post.pk %}" class="post-title">{{ post.title }}</a>#}
+            {#                                    <a href="#" class="post-author">By {{ post.user.username }}</a>#}
+            {#                                    <p>{{ post.short_description|truncatechars:100 }}</p>#}
+            {#                                </div>#}
+            {#                            </div>#}
+            {#                        {% endfor %}#}
+            {#                    </div>#}
+            {##}
+            {#                </div>#}
+            {##}
+            {#                <div class="col-12 col-md-4 col-lg-3">#}
+            {#                    <div class="sidebar-area">#}
+            {##}
+            {#                        <!-- Add Widget -->#}
+            {#                        <div class="single-widget-area add-widget mb-30">#}
+            {#                            <a href="#">#}
+            {#                                <img src="{% static 'img/bg-img/add3.png' %}" alt="">#}
+            {#                            </a>#}
+            {#                        </div>#}
+            {##}
+            {#                        <!-- Latest News Widget -->#}
+            {#                        <div class="single-widget-area news-widget mb-30">#}
+            {#                            <h4>Latest News</h4>#}
+            {##}
+            {#                            {% for lpost in latest %}#}
+            {#                                <!-- Single News Area -->#}
+            {#                                <div class="single-blog-post d-flex style-4 mb-30">#}
+            {#                                    <!-- Blog Thumbnail -->#}
+            {#                                    <div class="blog-thumbnail">#}
+            {#                                        <a href="{% url 'view-post' lpost.pk %}"><img src="{{ lpost.banner_path.url }}"#}
+            {#                                                                                      alt="{{ lpost.title }}"></a>#}
+            {#                                    </div>#}
+            {##}
+            {#                                    <!-- Blog Content -->#}
+            {#                                    <div class="blog-content">#}
+            {#                                        <span class="post-date">{{ lpost.date_created|date:"M d, Y" }}</span>#}
+            {#                                        <a href="{% url 'view-post' lpost.pk %}"#}
+            {#                                           class="post-title">{{ lpost.title }}</a>#}
+            {#                                    </div>#}
+            {#                                </div>#}
+            {#                            {% endfor %}#}
+            {##}
+            {#                        </div>#}
+            {##}
+            {#                    </div>#}
+            {##}
+            {#                </div>#}
+            {#            </div>#}
+            <div class="row justify-content-center">
+                <!-- Intro News Tabs Area -->
+                <div class="col-12 col-lg-12">
+                    <div class="intro-news-tab">
+
+                        <!-- Intro News Filter -->
+                        <div class="intro-news-filter d-flex justify-content-between">
+                            <h6>All the un-scored</h6>
+                            {#                            <nav class="row align-content-center mr-2">#}
+                            {#                                <div class="nav nav-tabs" id="nav-tab" role="tablist">#}
+                            {#                                    <view  class="nav-item nav-link active" style="font-size: 12px;background-color: #46bd61;color: white;line-height: 2em;-webkit-border-radius: 1em">Your Score</view>#}
+                            {#                                <a class="nav-item ml-2" id="nav1" data-toggle="tab" href="#nav-1"#}
+                            {#                                   role="tab" aria-controls="nav-1" aria-selected="true"#}
+                            {#                                   style="font-size: 12px;background-color: #46bd61;color: white;-webkit-border-radius: 1em;padding:0.1em 0.4em">Your#}
+                            {#                                    Score</a>#}
+                            {#                                <a class="nav-item ml-2" id="nav1" data-toggle="tab" href="#nav-1"#}
+                            {#                                   role="tab" aria-controls="nav-1" aria-selected="true"#}
+                            {#                                   style="font-size: 12px;background-color: #255dc4;color: white;-webkit-border-radius: 1em;padding:0.1em 0.4em">Pgm#}
+                            {#                                    Avg.</a>#}
+                            {#                                <a class="nav-item ml-2" id="nav1" data-toggle="tab" href="#nav-1"#}
+                            {#                                   role="tab" aria-controls="nav-1" aria-selected="true"#}
+                            {#                                   style="font-size: 12px;background-color: #cea035;color: white;-webkit-border-radius: 1em;padding:0.1em 0.4em">Head#}
+                            {#                                    Avg.</a>#}
+                            {#                                <a class="nav-item ml-2" id="nav1" data-toggle="tab" href="#nav-1"#}
+                            {#                                   role="tab" aria-controls="nav-1" aria-selected="true"#}
+                            {#                                   style="font-size: 12px;background-color: #c92a2a;color: white;-webkit-border-radius: 1em;padding:0.1em 0.4em">Final#}
+                            {#                                    Score</a>#}
+                            {#                                </div>#}
+                            {#                            </nav>#}
+                        </div>
+                        <div class="tab-content" id="nav-tabContent">
+
+                            <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav1">
+                                <div class="row ml-2">
+                                    {% for poster in poster_undone %}
+                                        <!-- Single News Area -->
+                                        <div class="col-12 col-sm-6">
+                                            <div class="single-blog-post d-flex style-4 mb-30">
+                                                <!-- Blog Thumbnail -->
+                                                <div class="blog-thumbnail" style="background-color: #8f8f8f">
+                                                    <a href="{% url 'view-poster' poster.posterID %}"><img
+                                                            src="{{ poster.poster_file.url }}"
+                                                            alt="{{ poster.title }}"></a>
+                                                </div>
+
+                                                <!-- Blog Content -->
+                                                <div class="blog-content">
+                                                    {#                                                    <span class="post-date">{{ poster.date_created|date:"M d, Y" }}</span>#}
+                                                    <a href="{% url 'view-poster' poster.posterID %}"
+                                                       class="post-title">{{ poster.title }}</a>
+                                                    {% for key, value in poster_score.items %}
+                                                        {% if key == poster.posterID %}
+                                                            <view class="score mr-2" id="{{ poster.posterID }}"
+                                                                  style="font-size: 12px;background-color: #46bd61;color: white;line-height: 2em;padding:0.1em 0.4em;-webkit-border-radius: 1em;font-weight: bold">
+                                                                Your score: {{ value }}   </view>
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                    {% for key, value in poster_Avg.items %}
+                                                        {% if key == poster.posterID %}
+                                                            <view class="score mr-2" id="{{ poster.posterID }}"
+                                                                  style="font-size: 12px;background-color: #255dc4;color: white;line-height: 2em;padding:0.1em 0.4em;-webkit-border-radius: 1em;font-weight: bold">
+                                                                Pgm Avg: {{ value }}   </view>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% for key, value in poster_final.items %}
+                                                        {% if key == poster.posterID %}
+                                                            <br><view class="score" id="{{ poster.posterID }}"
+                                                                  style="font-size: 12px;background-color: #c92a2a;color: white;line-height: 2em;padding:0.1em 0.4em;-webkit-border-radius: 1em;font-weight: bold">
+                                                                Final: {{ value }}   </view>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <!-- Intro News Tabs Area -->
+                <div class="col-12 col-lg-12">
+                    <div class="intro-news-tab">
+
+                        <!-- Intro News Filter -->
+                        <div class="intro-news-filter d-flex justify-content-between">
+                            <h6>All the scored</h6>
+                            {#                            <nav class="row align-content-center mr-2">#}
+                            {#                                <div class="nav nav-tabs" id="nav-tab" role="tablist">#}
+                            {#                                    <view  class="nav-item nav-link active" style="font-size: 12px;background-color: #46bd61;color: white;line-height: 2em;-webkit-border-radius: 1em">Your Score</view>#}
+                            {#                                <a class="nav-item ml-2" id="nav1" data-toggle="tab" href="#nav-1"#}
+                            {#                                   role="tab" aria-controls="nav-1" aria-selected="true"#}
+                            {#                                   style="font-size: 12px;background-color: #46bd61;color: white;-webkit-border-radius: 1em;padding:0.1em 0.4em">Your#}
+                            {#                                    Score</a>#}
+                            {#                                <a class="nav-item ml-2" id="nav1" data-toggle="tab" href="#nav-1"#}
+                            {#                                   role="tab" aria-controls="nav-1" aria-selected="true"#}
+                            {#                                   style="font-size: 12px;background-color: #255dc4;color: white;-webkit-border-radius: 1em;padding:0.1em 0.4em">Pgm#}
+                            {#                                    Avg.</a>#}
+                            {#                                <a class="nav-item ml-2" id="nav1" data-toggle="tab" href="#nav-1"#}
+                            {#                                   role="tab" aria-controls="nav-1" aria-selected="true"#}
+                            {#                                   style="font-size: 12px;background-color: #cea035;color: white;-webkit-border-radius: 1em;padding:0.1em 0.4em">Head#}
+                            {#                                    Avg.</a>#}
+                            {#                                <a class="nav-item ml-2" id="nav1" data-toggle="tab" href="#nav-1"#}
+                            {#                                   role="tab" aria-controls="nav-1" aria-selected="true"#}
+                            {#                                   style="font-size: 12px;background-color: #c92a2a;color: white;-webkit-border-radius: 1em;padding:0.1em 0.4em">Final#}
+                            {#                                    Score</a>#}
+                            {#                                </div>#}
+                            {#                            </nav>#}
+                        </div>
+                        <div class="tab-content" id="nav-tabContent">
+
+                            <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav1">
+                                <div class="row ml-2">
+                                    {% for poster in poster_done %}
+                                        <!-- Single News Area -->
+                                        <div class="col-12 col-sm-6">
+                                            <div class="single-blog-post d-flex style-4 mb-30">
+                                                <!-- Blog Thumbnail -->
+                                                <div class="blog-thumbnail" style="background-color: #8f8f8f">
+                                                    <a href="{% url 'view-poster' poster.posterID %}"><img
+                                                            src="{{ poster.poster_file.url }}"
+                                                            alt="{{ poster.title }}"></a>
+                                                </div>
+
+                                                <!-- Blog Content -->
+                                                <div class="blog-content">
+                                                    <span class="post-date">{{ poster.date_created|date:"M d, Y" }}</span>
+                                                    <a href="{% url 'view-poster' poster.posterID %}"
+                                                       class="post-title">{{ poster.title }}</a>
+                                                    {% for key, value in poster_score.items %}
+                                                        {% if key == poster.posterID %}
+                                                            <view class="score mr-2" id="{{ poster.posterID }}"
+                                                                  style="font-size: 12px;background-color: #46bd61;color: white;line-height: 2em;padding:0.1em 0.4em;-webkit-border-radius: 1em;font-weight: bold">
+                                                                Your score: {{ value }}   </view>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% for key, value in poster_Avg.items %}
+                                                        {% if key == poster.posterID %}
+                                                            <view class="score mr-2" id="{{ poster.posterID }}"
+                                                                  style="font-size: 12px;background-color: #255dc4;color: white;line-height: 2em;padding:0.1em 0.4em;-webkit-border-radius: 1em;font-weight: bold">
+                                                                Pgm Avg: {{ value }}   </view>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% for key, value in poster_final.items %}
+                                                        {% if key == poster.posterID %}
+                                                            <br><view class="score" id="{{ poster.posterID }}"
+                                                                  style="font-size: 12px;background-color: #c92a2a;color: white;line-height: 2em;padding:0.1em 0.4em;-webkit-border-radius: 1em;font-weight: bold">
+                                                                Final: {{ value }}   </view>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr> {% endblock content %}{% block javascripts %}
+    <script>
+
+    </script>
+{% endblock javascripts %}

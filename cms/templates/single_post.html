@@ -1,0 +1,467 @@
+{% extends 'layouts/base.html' %}{% load static %} {% block header %}
+    <meta name="description" content="{{ post.short_description }}"/>
+    <meta name="meta-keywords" content="{{ post.meta_keywords }}"/>
+    <meta name="og:title" content="{{ post.title }}"/>
+    <meta name="og:url" content="{{ request.get_full_path }}"/>
+    <meta name="og:description " content="{{ post.short_description }}"/>
+    <meta name="og:image" content="{{ post.banner_path.url }}"/>
+
+    <style>
+        .comment_area ol:empty:after {
+            content: "No comment has been posted yet.";
+            text-align: center;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        .s-tag {
+            background-color: #2e8bd9;
+            color: white;
+            border-radius: 0.2em;
+            padding: 0 0.2em;
+            min-width: 2em;
+            text-align: center
+        }
+    </style>
+{% endblock header %} {% block content %}
+    <div class="post-details-title-area bg-overlay clearfix"
+         style="background-image: url({{ poster.poster_file.url }})">
+        <div class="container-fluid h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12 col-lg-8">
+                    <!-- Post Content -->
+                    <div class="post-content">
+                        {% if related_info.is_div_winner %}
+                            <p class="tag" style="min-width: 50%; background-color: #eca21b">
+                                <span>{{ related_info.division }} Winner Poster</span></p>
+                        {% elif related_info.is_pgm_winner %}
+                            <p class="tag" style="min-width: 50%; background-color: #c7403d">
+                                <span>{{ poster.programme.programme_name }} Winner Poster</span></p>
+
+                        {% else %}
+                            <p class="tag" style="min-width: 50%;background-color: #1071c0">
+                                <span>{{ poster.programme.programme_name }}</span></p>
+                        {% endif %}
+                        <p class="post-title">{{ poster.title }}</p>
+                        <div class="d-flex align-items-center">
+                            <span class="post-date mr-30">{{ post.date_created|date:"M d, Y" }}</span>
+                            <span class="post-date">By {{ poster.authorName }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="post-news-area section-padding-100-0 mb-70">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- Post Details Content Area -->
+                <div class="col-12 col-lg-8">
+                    <h4>Abstract</h4>
+                    <div class="post-details-content mb-2">{{ poster.abstract|safe }}</div>
+                    <div class="mb-2">
+                        <img src="{{ poster.poster_file.url }}" alt="{{ post.title }}" class="imagr-fluid w-100">
+                    </div>
+                    {% if actions %}
+                        <div class="mb-2">
+                            <a href="{% url 'edit-post' post.id %}" class="btn btn-primary btn-sm rounded-0"><i
+                                    class="fa fa-edit"></i> Edit Post</a>
+                            <button type="button" id="delete-post" class="btn btn-danger btn-sm rounded-0"><i
+                                    class="fa fa-trash"></i> Delete Post
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Sidebar Widget -->
+                {% if user.user_type %}
+                    <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+                        <div class="sidebar-area">
+{#           <label class="h7 font-bold" style="color: #002752">{{ user.user_type }}</label>#}
+                            <div class="single-widget-area add-widget mb-30 p-2"
+                                 style="border-radius: 1em 0 1em 0 ;background-color: #eaeaea">
+                                {% if user.user_type == 'Attendee' %}
+                                    <!-- Vote Widget -->
+                                    {% if related_info.votes >= 0 %}
+                                        <label class="h3 font-bold" style="color: #002752">Votes
+                                            Get: {{ related_info.votes }}</label>
+                                    {% endif %}
+                                    {% if final_score or final_pgm_score %}
+                                    {% else %}
+                                        {% if not user.attendee.vote_status %}
+                                            <h4 style="color: #1e7e34">Do you like this poster?</h4>
+                                            <button id="vote" class="btn btn-success font-bold mt-1">Vote for it!
+                                            </button>
+                                        {% endif %}
+                                    {% endif %}
+
+                                {% endif %}
+
+                                {% if user.user_type == 'Programme Judge' %}
+                                    <!-- PgmJ Score Widget -->
+                                    <label class="h3 font-bold" style="color: #002752">Dear Programme Judge:</label>
+                                    {% if not related_info.auth %}
+                                        <label class="h5 font-bold" style="color: #c7403d">This poster is not belong to
+                                            your programme.</label>
+                                    {% else %}
+                                        {% if not related_info.score %}
+                                            <!-- Un-Score -->
+                                            <h5 style="color: #c7403d">You have not scored this poster yet!</h5>
+                                            <label class="h4 font-bold" style="color: #002752">Scoring:</label><br>
+                                            <div style="display: flex;flex-direction: row;justify-content: space-between;margin-right: 4em">
+                                                <label class="h6 font-bold mt-2" style="color: #606060">Visual and
+                                                    Layout</label>
+                                                <label class="h6 font-bold mt-2 s-tag" id="tag1">0</label>
+                                            </div>
+                                            <input class="form form-control-range custom-range" type="range" max="5"
+                                                   min="0" id="1" step="0.1" oninput="showScore(this)"
+                                                   onblur="$('#tag'+this.id).css('background-color', '#2e8bd9')">
+                                            <div class="row justify-content-between ml-1 mr-1">
+                                                <span>0</span>
+                                                <span>5</span>
+                                            </div>
+                                            <div style="display: flex;flex-direction: row;justify-content: space-between;margin-right: 4em">
+                                                <label class="h6 font-bold mt-2" style="color: #606060">Poster
+                                                    Organization</label>
+                                                <label class="h6 font-bold mt-2 s-tag" id="tag2">0</label>
+                                            </div>
+                                            <input
+                                                    class="form form-control-range custom-range" type="range" max="5"
+                                                    min="0" id="2" step="0.1" oninput="showScore(this)"
+                                                    onblur="$('#tag'+this.id).css('background-color', '#2e8bd9')">
+                                            <div class="row justify-content-between ml-1 mr-1">
+                                                <span>0</span>
+                                                <span>5</span>
+                                            </div>
+                                            <div style="display: flex;flex-direction: row;justify-content: space-between;margin-right: 4em">
+                                                <label class="h6 font-bold mt-2" style="color: #606060">Poster
+                                                    Content</label>
+                                                <label class="h6 font-bold mt-2 s-tag" id="tag3">0</label>
+                                            </div>
+                                            <input class="form form-control-range custom-range" type="range" max="5"
+                                                   min="0" id="3" step="0.1" oninput="showScore(this)"
+                                                   onblur="$('#tag'+this.id).css('background-color', '#2e8bd9')">
+                                            <div class="row justify-content-between ml-1 mr-1">
+                                                <span>0</span>
+                                                <span>5</span>
+                                            </div>
+                                            <div style="display: flex;flex-direction: row;justify-content: space-between;margin-right: 4em">
+                                                <label class="h6 font-bold mt-2" style="color: #606060">Written
+                                                    Language</label>
+                                                <label class="h6 font-bold mt-2 s-tag" id="tag4">0</label>
+                                            </div>
+                                            <input class="form form-control-range custom-range" type="range" max="5"
+                                                   min="0" id="4" step="0.1" oninput="showScore(this)"
+                                                   onblur="$('#tag'+this.id).css('background-color', '#2e8bd9')">
+                                            <div class="row justify-content-between ml-1 mr-1">
+                                                <span>0</span>
+                                                <span>5</span>
+                                            </div>
+                                            <div style="display: flex;flex-direction: row;justify-content: space-between;margin-right: 4em">
+                                                <label class="h6 font-bold mt-2" style="color: #606060">Oral
+                                                    Presentation</label>
+                                                <label class="h6 font-bold mt-2 s-tag" id="tag5">0</label>
+                                            </div>
+                                            <input
+                                                    class="form form-control-range custom-range" type="range" max="5"
+                                                    min="0" id="5" step="0.1" oninput="showScore(this)"
+                                                    onblur="$('#tag'+this.id).css('background-color', '#2e8bd9')">
+                                            <div class="row justify-content-between ml-1 mr-1">
+                                                <span>0</span>
+                                                <span>5</span>
+                                            </div>
+                                            <label class="h4 font-bold mt-2" style="color: #c92a2a">Your overall
+                                                score:</label>
+                                            <label class="h4 font-bold mt-2" style="color: #c92a2a"
+                                                   id="overall">0</label>
+                                            <br>
+                                            <button id="up-score" class="btn btn-danger font-bold mt-2">Confirm</button>
+                                            {#                                        </div>#}
+                                        {% else %}
+                                            <!-- Scored -->
+                                            <h4 style="color: #007bff">Your score is: {{ related_info.score }}</h4>
+                                            {% if not related_info.j_all_finished %}
+                                                <h6 style="color: #696969">Waiting other programme judge to
+                                                    finish...</h6>
+                                            {% elif not final_score %}
+                                                <h6 style="color: #c92a2a">The programme score of this poster is
+                                                    finalized.</h6>
+                                                {% if related_info.pAvg %}
+                                                    <label class="h5 font-bold" style="color: #e5b72a">Programme Avg
+                                                        Score: {{ related_info.pAvg }}</label>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if user.user_type == 'Head Judge' %}
+                                    <!-- HeadJ Score Widget -->
+                                    <label class="h3 font-bold" style="color: #002752">Dear Head Judge:</label>
+                                    {% if not related_info.pgm_finished %}
+                                        <label class="h6 font-bold"
+                                               style="color: #c7403d">{{ poster.programme.programme_name }} Judges have
+                                            not finished scoring...</label>
+                                    {% else %}
+                                        {% if related_info.pAvg %}
+                                            <label class="h5 font-bold" style="color: #e5b72a">Programme Avg
+                                                Score: {{ related_info.pAvg }}</label>
+                                        {% endif %}
+                                        {% if not related_info.is_pgm_winner and not related_info.is_div_winner %}
+                                            <label class="h6 font-bold" style="color: #007bff">This poster is not a
+                                                Programme Winner Poster!</label>
+                                        {% else %}
+                                            {% if not related_info.score %}
+                                                <!-- Un-Score -->
+                                                {% if not related_info.pgm_all_finished %}
+                                                    <h5 style="color: #c7403d">You have to wait all programme finalizing
+                                                        their winners to score!</h5>
+                                                {% else %}
+                                                    <h5 style="color: #c7403d">You have not scored this poster yet!</h5>
+                                                    <label class="h4 font-bold" style="color: #002752">Scoring:</label>
+                                                    <br>
+                                                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-right: 4em">
+                                                        <label class="h6 font-bold mt-2" style="color: #606060">Visual
+                                                            and
+                                                            Layout</label>
+                                                        <label class="h6 font-bold mt-2 s-tag" id="tag1">0</label>
+                                                    </div>
+                                                    <input class="form form-control-range custom-range" type="range"
+                                                           max="5"
+                                                           min="0" id="1" step="0.1" oninput="showScore(this)"
+                                                           onblur="$('#tag'+this.id).css('background-color', '#2e8bd9')">
+                                                    <div class="row justify-content-between ml-1 mr-1">
+                                                        <span>0</span>
+                                                        <span>5</span>
+                                                    </div>
+                                                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-right: 4em">
+                                                        <label class="h6 font-bold mt-2" style="color: #606060">Poster
+                                                            Organization</label>
+                                                        <label class="h6 font-bold mt-2 s-tag" id="tag2">0</label>
+                                                    </div>
+                                                    <input
+                                                            class="form form-control-range custom-range" type="range"
+                                                            max="5"
+                                                            min="0" id="2" step="0.1" oninput="showScore(this)"
+                                                            onblur="$('#tag'+this.id).css('background-color', '#2e8bd9')">
+                                                    <div class="row justify-content-between ml-1 mr-1">
+                                                        <span>0</span>
+                                                        <span>5</span>
+                                                    </div>
+                                                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-right: 4em">
+                                                        <label class="h6 font-bold mt-2" style="color: #606060">Poster
+                                                            Content</label>
+                                                        <label class="h6 font-bold mt-2 s-tag" id="tag3">0</label>
+                                                    </div>
+                                                    <input class="form form-control-range custom-range" type="range"
+                                                           max="5"
+                                                           min="0" id="3" step="0.1" oninput="showScore(this)"
+                                                           onblur="$('#tag'+this.id).css('background-color', '#2e8bd9')">
+                                                    <div class="row justify-content-between ml-1 mr-1">
+                                                        <span>0</span>
+                                                        <span>5</span>
+                                                    </div>
+                                                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-right: 4em">
+                                                        <label class="h6 font-bold mt-2" style="color: #606060">Written
+                                                            Language</label>
+                                                        <label class="h6 font-bold mt-2 s-tag" id="tag4">0</label>
+                                                    </div>
+                                                    <input class="form form-control-range custom-range" type="range"
+                                                           max="5"
+                                                           min="0" id="4" step="0.1" oninput="showScore(this)"
+                                                           onblur="$('#tag'+this.id).css('background-color', '#2e8bd9')">
+                                                    <div class="row justify-content-between ml-1 mr-1">
+                                                        <span>0</span>
+                                                        <span>5</span>
+                                                    </div>
+                                                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-right: 4em">
+                                                        <label class="h6 font-bold mt-2" style="color: #606060">Oral
+                                                            Presentation</label>
+                                                        <label class="h6 font-bold mt-2 s-tag" id="tag5">0</label>
+                                                    </div>
+                                                    <input
+                                                            class="form form-control-range custom-range" type="range"
+                                                            max="5"
+                                                            min="0" id="5" step="0.1" oninput="showScore(this)"
+                                                            onblur="$('#tag'+this.id).css('background-color', '#2e8bd9')">
+                                                    <div class="row justify-content-between ml-1 mr-1">
+                                                        <span>0</span>
+                                                        <span>5</span>
+                                                    </div>
+                                                    <label class="h4 font-bold mt-2" style="color: #c92a2a">Your overall
+                                                        score:</label>
+                                                    <label class="h4 font-bold mt-2" style="color: #c92a2a"
+                                                           id="overall">0</label>
+                                                    <br>
+                                                    <button id="up-score" class="btn btn-danger font-bold mt-2">Confirm
+                                                    </button>
+                                                {% endif %}
+
+                                                {#                                        </div>#}
+                                            {% else %}
+                                                <!-- Scored -->
+                                                <h4 style="color: #007bff">Your score is: {{ related_info.score }}</h4>
+                                                {% if not related_info.j_all_finished %}
+                                                    <h6 style="color: #696969">Waiting other head judge to
+                                                        finish...</h6>
+                                                {% elif not final_score %}
+                                                    <h6 style="color: #c92a2a">The score of this poster is
+                                                        finalized.</h6>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if final_score %}
+                                    <br><label class="h4 font-bold mt-2" style="color: #c92a2a">Final
+                                    Score: {{ final_score }}</label>
+                                {% elif final_pgm_score %}
+                                    <br><label class="h6 font-bold mt-2" style="color: #c92a2a">Final Programme
+                                    Score: {{ final_pgm_score }}</label>
+                                {% endif %}
+                            </div>
+
+
+                            <!-- Latest News Widget -->
+                            {% if related_info.unfinished %}
+                                <div class="single-widget-area news-widget mb-30 ">
+                                    <h5>More Posters need you to score:</h5>
+                                    {% for poster in related_info.unfinished %}
+                                        <!-- Single News Area -->
+                                        <div class="single-blog-post d-flex style-4 mb-30">
+                                            <!-- Blog Thumbnail -->
+                                            <div class="blog-thumbnail">
+                                                <a href="{% url 'view-poster' poster.posterID %}"><img
+                                                        src="{{ poster.poster_file.url }}"
+                                                        alt="{{ poster.title }}"></a>
+                                            </div>
+
+                                            <!-- Blog Content -->
+                                            <div class="blog-content">
+                                                <span class="post-date">{{ lpost.date_created|date:"M d, Y" }}</span>
+                                                <a href="{% url 'view-poster' poster.posterID %}"
+                                                   class="post-title">{{ poster.title }}</a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        </div>
+    </section>
+{% endblock content %} {% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            for (let i = 1; i < 6; i++) {
+                $('#' + i).val(0);//设定默认值
+                $('#tag' + i).html(0);//设定默认值
+            }
+
+        })
+
+
+        function showScore(e) {
+            {#$('#tag4').prop('title','要修改的值')#}
+            $('#tag' + e.id).html(e.value);//设定默认值
+            $('#tag' + e.id).css('background-color', '#c92a2a')
+            let score = 0
+            for (let i = 1; i < 6; i++) {
+                var s = $('#' + i)
+                score += Number(s.val());//设定默认值
+            }
+            {#alert(score)#}
+            $('#overall').html(score.toFixed(1))
+        }
+
+        $(function () {
+            $('#vote').click(function (e) {
+                if (!confirm("Do you really want to vote for this poster?")) {
+                    return
+                }
+                let JSON_data = {'poster_id': '{{ poster.posterID }}'}
+                {#start_loader();#}
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{csrf_token}}'
+                    },
+                    url: "{% url 'vote-poster' %}",
+                    data: JSON.stringify(JSON_data),
+                    contentType: 'application/json; charset=utf-8',
+                    {#method: 'POST',#}
+                    type: 'POST',
+                    dataType: 'json',
+                    error: err => {
+                        console.log(err)
+                        alert("An error occured");
+                        {#end_loader();#}
+                    },
+                    success: function (resp) {
+                        {#alert(resp.status)#}
+                        if (typeof resp == 'object' && resp.status === 'success') {
+                            {#el.removeClass("alert alert-danger err-msg")#}
+                            {#location.href = "{% url '' %}"#}
+                            {#alert("yes!")#}
+                        } else if (resp.status === 'failed' && !!resp.msg) {
+                            alert(resp.msg)
+                        } else {
+                            alert("An error occured");
+                            end_loader();
+                            console.err(resp)
+                        }
+                        location.reload()
+                    }
+                })
+            })
+        })
+
+        $(function () {
+            $('#up-score').click(function (e) {
+                if (!confirm("Your Score is " + $('#overall').html() + ", please confirm.")) {
+                    return
+                }
+                let JSON_data = {
+                    'poster_id': '{{ poster.posterID }}',
+                    'overall': $('#overall').html()
+                }
+                {#start_loader();#}
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{csrf_token}}'
+                    },
+                    url: "{% url 'score-poster' %}",
+                    data: JSON.stringify(JSON_data),
+                    contentType: 'application/json; charset=utf-8',
+                    {#method: 'POST',#}
+                    type: 'POST',
+                    dataType: 'json',
+                    error: err => {
+                        console.log(err)
+                        alert("An error occured");
+                        {#end_loader();#}
+                    },
+                    success: function (resp) {
+                        {#alert(resp.status)#}
+                        if (typeof resp == 'object' && resp.status === 'success') {
+                            {#el.removeClass("alert alert-danger err-msg")#}
+                            {#location.href = "{% url '' %}"#}
+                            {#alert("yes!")#}
+                        } else if (resp.status === 'failed' && !!resp.msg) {
+                            alert(resp.msg)
+                        } else {
+                            alert("An error occured");
+                            end_loader();
+                            console.err(resp)
+                        }
+                        location.reload()
+                    }
+                })
+            })
+        })
+    </script>
+{% endblock javascripts %}

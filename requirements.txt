@@ -1,0 +1,4 @@
+Django==3.1.7
+IPy==1.01
+itsdangerous==2.0.1
+numpy==1.21.5

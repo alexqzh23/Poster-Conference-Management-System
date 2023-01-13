@@ -1,0 +1,81 @@
+{% extends 'layouts/base.html' %}{% load static %} {% block content %}
+    <h3 class="text-center  mt-30"><b>{{ pgm.programme_name }}</b></h3>
+    <center>
+        <hr class="w-75">
+    </center>
+    <section class="intro-news-area section-padding-100-0 mb-70">
+        <div class="container">
+
+            <div class="row justify-content-center">
+                <!-- Intro News Tabs Area -->
+                <div class="col-12 col-lg-12">
+                    <div class="intro-news-tab">
+
+                        <!-- Intro News Filter -->
+                        <div class="intro-news-filter d-flex justify-content-between">
+                            <h6>Feature Posters</h6>
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active" id="nav1" data-toggle="tab" href="#nav-1"
+                                       role="tab" aria-controls="nav-1" aria-selected="true">Most Popular</a>
+                                    <a class="nav-item nav-link active" id="nav1" data-toggle="tab" href="#nav-1"
+                                       role="tab" aria-controls="nav-1" aria-selected="true">Random</a>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="tab-content" id="nav-tabContent">
+
+                            <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav1">
+                                <div class="row">
+                                    {% for poster in latest_top %}
+                                        <!-- Single News Area -->
+                                        <div class="col-12 col-sm-6">
+                                            <div class="single-blog-post style-2 mb-5">
+                                                <!-- Blog Thumbnail -->
+                                                <div class="blog-thumbnail">
+                                                    <a href="{% url 'view-poster' poster.posterID %}"><img
+                                                            src="{{ poster.poster_file.url }}"
+                                                            alt="{{ poster.title }}"></a>
+                                                </div>
+
+                                                <!-- Blog Content -->
+                                                <div class="blog-content">
+                                                    <span class="post-date">{{ lpost.date_created|date:"M d, Y" }}</span>
+                                                    <a href="{% url 'view-poster' poster.posterID %}"
+                                                       class="post-title">{{ poster.title }}</a>
+                                                    <a href="mailto:{{ poster.email }}" target="_blank"
+                                                       class="post-author">By {{ poster.authorName }}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    {#                                    {% for lpost in latest_bottom %}#}
+                                    {#                                        <!-- Single News Area -->#}
+                                    {#                                        <div class="col-12 col-sm-6">#}
+                                    {#                                            <div class="single-blog-post d-flex style-4 mb-30">#}
+                                    {#                                                <!-- Blog Thumbnail -->#}
+                                    {#                                                <div class="blog-thumbnail">#}
+                                    {#                                                    <a href="#"><img#}
+                                    {#                                                            src="{{ lpost.banner_path.url }}"#}
+                                    {#                                                            alt="{{ lpost.title }}"></a>#}
+                                    {#                                                </div>#}
+                                    {##}
+                                    {#                                                <!-- Blog Content -->#}
+                                    {#                                                <div class="blog-content">#}
+                                    {#                                                    <span class="post-date">{{ lpost.date_created|date:"M d, Y" }}</span>#}
+                                    {#                                                    <a href="#"#}
+                                    {#                                                       class="post-title">{{ lpost.title }}</a>#}
+                                    {#                                                </div>#}
+                                    {#                                            </div>#}
+                                    {#                                        </div>#}
+                                    {#                                    {% endfor %}#}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

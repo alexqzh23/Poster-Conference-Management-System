@@ -1,0 +1,118 @@
+{% extends 'layouts/base.html' %}{% load static %}{% block content %}
+<div class="container-fluid mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+            <div class="card card-default rounded-0 shadow">
+                <div class="card-header">
+                    <h4 class="card-title"><b>Update Poster</b></h4>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <form id="upload_poster" method="POST" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mdc-layout-grid">
+                                <div class="mdc-layout-grid__inner">
+                                    <div class="form-group mb-3">
+                                        <label for="file" class="control-label">Select File</label>
+                                        <input type="file" name="file" id="file">
+                                        <img src="{{ MEDIA_URL }}{{poster.poster_file.url}}" alt="">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="programme_name" class="control-label">Programme</label>
+                                        <select name="programme_name" id="programme_name" class="form-control rounded-0">
+                                            {% for programme in programmes %}
+                                            <option value="{{programme.programme_name}}" {% ifequal programme poster.programme %} selected {% endifequal %}>{{programme.programme_name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="title" class="control-label">Title</label>
+                                        <input type="text" class="form-control rounded-0" name="title" id="title" value="{{poster.title}}" >
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="abstract" class="control-label">Abstract</label>
+                                        <input type="text" class="form-control rounded-0" name="abstract" id="abstract" value="{{poster.abstract}}" >
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="authorName" class="control-label">Author Name</label>
+                                        <input type="text" class="form-control rounded-0" name="authorName" id="authorName" value="{{poster.authorName}}" >
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="authorEmail" class="control-label">Author Email</label>
+                                        <input type="text" class="form-control rounded-0" name="authorEmail" id="authorEmail" value="{{poster.authorEmail}}" >
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="supervisorName" class="control-label">Supervisor Name</label>
+                                        <input type="text" class="form-control rounded-0" name="supervisorName" id="supervisorName" value="{{poster.supervisorName}}">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <div class="d-flex w-100 justify-content-end">
+                                            <input class="btn btn-sm rounded-0 btn-primary col-4" type="button" name="Submit" value="Back"
+                                                   style="margin-right:203px" onclick="javascript:history.go(-1)" />
+                                            <button class="btn btn-sm rounded-0 btn-primary col-4" type="button" id="submit">
+                                                    Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/static/layui/layui.js"></script>s
+<script>
+
+    layui.use(['layer'], function () {
+        $('#submit').click(function () {
+            var formData =  new FormData(document.getElementById("upload_poster"))
+            $.ajax({
+                cache : true,
+                type : "post",
+                dataType:"json",
+                url : "{% url 'update_poster_detail' poster.posterID %}",
+                async : false,
+                data : formData,
+                contentType: false,
+                processData: false,
+                beforeSend:function(){
+                    layer.load(2);
+                },
+                complete:function(){
+                    layer.closeAll('loading');
+                },
+                success:function(data){
+                    if (data['code']==0){
+                        layer.closeAll();
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            title:'sucessfully prompt',
+                            time:1000,
+                            end: function(){
+                                window.location.href='/update_poster/';
+                            }
+                        });
+                    }else{
+                    msg=data['msg']
+                    if(data.hasOwnProperty("err")){
+                        err = data['err']
+                        for (var i = 0; i < err.length; i++) {
+                        msg=msg+"："+err[i]
+                        break
+                        };
+                    }
+                    layer.msg(msg, {icon: 2,title:'error'});
+                    }
+                },
+                error:function(error){
+                    layer.alert("request failed");
+                }
+            });
+            return false;
+        })
+    })
+</script>
+{% endblock content %}

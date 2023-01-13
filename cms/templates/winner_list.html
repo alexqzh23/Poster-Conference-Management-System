@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %}{% load static %}{% block content %}
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <title>Winner List</title>
+    <link rel="stylesheet" href="../../static/css/winner_list.css">
+</head>
+<body>
+<div class="body">
+    <h1>Luckydraw Winnerlist</h1>
+    <h3 class="1"></h3>
+    <ul id="winners">
+        <li style="margin-left: 115px">First Prize</li>
+        <li>Second Prize</li>
+        <li>Third Prize</li>
+        <marquee class="users" align="abs middle" behavior="scroll" direction="up"
+                 scrollamount="10" onMouseOut="this.start()" onMouseOver="this.stop()">
+            <ul>
+                {% for i in wn_list %}
+                    <li style="font-size:24px">{{ i }}</li>
+                {% endfor %}
+            </ul>
+        </marquee>
+    </ul>
+</div>
+</body>
+</html>
+{% endblock content %}

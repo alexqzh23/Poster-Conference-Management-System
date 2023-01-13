@@ -1,0 +1,37 @@
+/** {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*}*/
+
+.search_container {
+    height: 45px;
+    width: 200px;
+    margin: 40px auto 0 auto;
+}
+
+.search_parent {
+    position: relative;
+}
+
+.search {
+    width: 300px;
+    height: 40px;
+    border-radius: 18px;
+    outline: none;
+    border: 1px solid #ccc;
+    padding-left: 20px;
+    position: absolute;
+}
+
+.search_btn {
+    height: 35px;
+    width: 50px;
+    position: absolute;
+    /*background: url("../img/search_box.png") no-repeat -2px -99px;*/
+    top: 2px;
+    left: 240px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: white;
+}

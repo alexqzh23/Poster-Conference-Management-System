@@ -1,0 +1,36 @@
+{% extends 'layouts/base.html' %} {% block content%}
+<div class="container mb-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-10 col-sm-12 col-xs-12">
+            <div class="card shadow rounded-0">
+                <div class="card-header">
+                    <div class="h5 card-title fw-bold">Conference Info</div>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <dl>
+                                    <dt class="text-muted">Conference DateTime</dt>
+                                    <dd class="ps-4">{{ date }}</dd>
+                                    <dt class="text-muted">Conference Content</dt>
+                                    <dd class="ps-4">{{ content }}</dd>
+                                    <dt class="text-muted">Conference Rule</dt>
+                                    <dd class="ps-4">{{ rule }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex w-100 text-end justify-content-end">
+{#                        <a href="{% url 'create-conf' %}" class="btn btn btn-light border btn-sm bg-gradient rounded-0 me-2">Create Conference</a>#}
+                        <a href="{% url 'setup-edit' %}" class="btn btn btn-light border btn-sm bg-gradient rounded-0 me-2">Edit Conference</a>
+{#                        <a href="{% url 'setup/member' %}" class="btn btn btn-primary btn-sm bg-gradient rounded-0">Committee Member</a>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content%}

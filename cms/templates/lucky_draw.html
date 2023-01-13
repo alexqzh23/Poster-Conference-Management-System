@@ -1,0 +1,105 @@
+{% extends 'layouts/base.html' %}{% load static %}{% block content %}
+    <section class="intro-news-area section-padding-100-0 mb-70">
+        <form method="post">
+            {% csrf_token %}
+            <div class="container" style="width:500px; height:500px;">
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col-12 text-center">
+                        <div class="card" style="width:700px; height:500px; right:25%;">
+                            <div class="card-body">
+                                <h1 class="card-title">UIC</h1>
+                                <h1 class="card-title2">Lucky Draw</h1>
+                                <h1 class="card-title3">For Attendee</h1>
+                                <h1 class="card-title4"></h1>
+                                <h1 class="card-title5"></h1>
+                                <button id="start" type="button" class="btn btn-success" style="width:200px; height:50px; margin-top: 50px">start</button>
+                                <button id="stop" type="submit" class="btn btn-danger" style="width:200px; height:50px; margin-top: 50px">end</button>
+                                <button id="fresh" type="button" class="btn btn-warning" style="width:200px; height:50px; margin-top: 50px">refresh</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </div>
+        </form>
+    </section>
+{% endblock content %} {% block javascripts %}
+<script type="text/javascript">
+   var timer;
+   var number = 0;
+   var items = {{ objs|safe }}
+
+   window.onload = function() {
+       var container = document.querySelector(".card-title"),
+           container2 = document.querySelector(".card-title2"),
+           container3 = document.querySelector(".card-title3"),
+           container4 = document.querySelector(".card-title4"),
+           container5 = document.querySelector(".card-title5"),
+           start = document.getElementById("start"),
+           stop = document.getElementById("stop"),
+           fresh = document.getElementById("fresh");
+
+   	   //event call
+       start.onclick = play;
+       stop.onclick = end;
+       fresh.onclick = refresh;
+
+       document.onkeyup = function(event) {
+           event = event || window.event;
+           //console.log(event.keyCode);
+           if (event.keyCode == 13 || event.keyCode == 32) {
+               if (number == 0) {
+                   play();
+                   number = 1;
+               } else {
+                   end();
+                   number = 0;
+               }
+           }
+       }
+
+   	   //start
+       function play() {
+           clearInterval(timer);
+           timer = setInterval(function() {
+               var item = Math.floor(Math.random() * items.length);
+               container.innerHTML = items[item];
+           }, 300);
+           timer = setInterval(function() {
+               var item = Math.floor(Math.random() * items.length);
+               container2.innerHTML = items[item];
+           }, 300);
+           timer = setInterval(function() {
+               var item = Math.floor(Math.random() * items.length);
+               container3.innerHTML = items[item];
+           }, 300);
+           timer = setInterval(function() {
+               var item = Math.floor(Math.random() * items.length);
+               container4.innerHTML = items[item];
+           }, 300);
+           timer = setInterval(function() {
+               var item = Math.floor(Math.random() * items.length);
+               container5.innerHTML = items[item];
+           }, 300);
+           start.classList.remove("btn-success");
+           start.classList.add("btn-primary");
+           stop.classList.add("btn-danger");
+       }
+
+   	   //end
+       function end() {
+           clearInterval(timer);
+           stop.classList.remove("btn-danger");
+           stop.classList.add("btn-info");
+           start.classList.remove("btn-primary");
+           start.classList.add("btn-success");
+       }
+
+   	   //refresh
+       function refresh() {
+           window.location.reload();
+       }
+   }
+</script>
+{% endblock javascripts %}

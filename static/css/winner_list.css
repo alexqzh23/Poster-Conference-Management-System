@@ -1,0 +1,140 @@
+/*Lucky draw main interface style*/
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+/*body {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    background-size: 100% 100%;*/
+/*    overflow: hidden;*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    background: #C53F41 radial-gradient(#c8491d, #981e27) no-repeat;*/
+/*}*/
+
+.body {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+h1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 4vw;
+    font-family: SimHei, serif;
+    font-weight: 700;
+    color: rgb(60, 169, 227);
+    text-align: center;
+    margin: 0;
+    padding: 20px 0 10px 0;
+}
+
+h3 {
+    font-family: SimSun, serif;
+    font-size: 5vh;
+    font-weight: 700;
+    margin: 0 auto;
+    color: rgb(21, 21, 19);
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.users {
+    width: 100%;
+    text-align: center;
+    max-height: 60vh;
+    overflow: hidden;
+    padding: 20px;
+}
+
+
+ul {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.user {
+    animation: move 40s linear infinite normal;
+    animation-fill-mode: forwards;
+}
+
+ul:hover {
+    animation-play-state: paused;
+    -webkit-animation-play-state: paused;
+}
+
+@keyframes move {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-3115px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+ul li {
+    list-style: none;
+    width: 30vw;
+    height: 5vh;
+    line-height: 10vh;
+    font-family: SimSun, serif;
+    font-size: 5vh;
+    font-weight: 700;
+    color: rgb(17, 17, 16);
+    float: left;
+    padding: 0 20px;
+}
+
+.buttons {
+    position: fixed;
+    bottom: 3vh;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    max-width: 40vw;
+    min-width: 15vw;
+}
+
+.draw_prize, .see button {
+    margin: 0 auto;
+    width: 24.44vh;
+    height: 5.74vh;
+    background: #f9f4f208;
+    border-radius: 0.74vh;
+    font-size: 2.315vh;
+    border: 0.0926vh solid #fff;
+    color: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+ul.marquee  {
+    display: block;
+    line-height: 1;
+    position: relative;
+    overflow: hidden;
+    width: 400px;
+    height: 22px;
+
+}
+
+
+ul.marquee li  {
+    position: absolute;
+    top: -999em;
+    left: 0;
+    display: block;
+    white-space: nowrap;
+    padding:3px 5px;
+    text-indent: 0.8em;
+}
